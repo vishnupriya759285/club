@@ -31,12 +31,16 @@ const Login = () => {
     setIsLoading(true);
     setLocalError('');
 
-    const result = await login(formData);
+    try {
+      const result = await login(formData);
 
-    if (result.success) {
-      navigate('/');
-    } else {
-      setLocalError(result.error);
+      if (result.success) {
+        navigate('/');
+      } else {
+        setLocalError(result.error);
+      }
+    } catch (err) {
+      setLocalError('Connection error. Please check your internet connection.');
     }
 
     setIsLoading(false);
@@ -101,6 +105,12 @@ const Login = () => {
             >
               {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
+
+            {isLoading && (
+              <div className="text-center text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
+                ⏳ First login may take 30-60 seconds as the server wakes up...
+              </div>
+            )}
 
             <div className="text-center">
               <p className="text-sm text-gray-600">
